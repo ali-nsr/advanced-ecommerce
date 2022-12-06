@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block window_title %}{% endblock %}
+
+{% block content %}
+    <main class="page-content">
+        <div class="container">
+            <div class="auth-wrapper">
+                <div class="auth-form shadow-around">
+                    <div class="site-logo">
+                        <a href="{% url 'store:home_page' %}">
+                            <img src="{{ site_setting.site_header_logo.url }}"
+                                 alt="{{ site_setting.site_header_logo_alt }}">
+                        </a>
+                    </div>
+                    <div class="auth-form-title">
+                        ورود به همتا
+                    </div>
+                    <form action="{% url 'accounts:login_page' %}" method="post">
+                        {% csrf_token %}
+                        {{ login_form }}
+                        <div class="form-element-row text-left mt-3">
+                            <button type="submit" class="btn-element btn-info-element btn-block">
+                                <i class="fad fa-sign-in-alt"></i>
+                                ورود به همتا گیم
+                            </button>
+                        </div>
+
+                    </form>
+                    <div class="auth-form-footer">
+                        <span>کاربر جدید هستید؟</span>
+                        <a href="{% url 'accounts:register_page' %}" class="link--with-border-bottom">ثبت نام در
+                            همتا</a>
+                        <br>
+                        <a href="{% url 'accounts:forgot_password' %}" class="link--with-border-bottom">
+                            بازیابی گذواژه با شماره همراه
+                        </a>
+                        <br>
+                        <a href="{% url 'accounts:reset_password_email' %}" class="link--with-border-bottom">
+                            بازیابی گذرواژه با ایمیل
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

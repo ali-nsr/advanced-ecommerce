@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px; transform: none;">
+        <div class="container" style="transform: none;">
+            <div class="row mb-5" style="transform: none;">
+                {% include 'accounts/profile/sidebar.html' %}
+                <div class="col-lg-9 col-md-8 col-xs-9">
+                    <div class="section-title mb-2">
+                        تیکت های من
+                    </div>
+                    <div class="shadow-around">
+                        <div class="listing-items row">
+                            <div class="alert alert-primary col-12 m-0" role="alert">
+                                <h4 class="alert-heading">لیست تیکت های شما</h4>
+                                <p>در این قسمت میتوانید با ارسال تیکت با ما در ارتباط باشید.</p>
+                                <div class="form-submit col-md-12">
+                                    <a href="{% url 'ticket:new_ticket' %}" class="btn btn-success">ثبت تیکت جدید</a>
+                                </div>
+                            </div>
+                            {% if tickets %}
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">عنوان تیکت</th>
+                                        <th scope="col">ایمیل</th>
+                                        <th scope="col">وضعیت</th>
+                                        <th scope="col">تاریخ ثبت تیکت</th>
+                                        <th scope="col">مشاهده</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for ticket in tickets %}
+                                        <tr>
+                                            <td>{{ ticket.title }}</td>
+                                            <td>{{ request.user.email }}</td>
+                                            <td>{{ ticket.get_status_display }}</td>
+                                            <td>{{ ticket.jalali_created_date }}</td>
+                                            <td>
+                                                <a href="{% url 'ticket:ticket_chat' ticket.id %}"
+                                                   class="btn btn-success">مشاهده</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="alert alert-error" role="alert">
+                                    <h4 class="alert-heading">در حال حاضر هیچ تیکتی ارسال نکرده اید.</h4>
+                                    <p>برای ارسال تیکت گزینه ثبت تیکت جدید را کلیک کنید.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

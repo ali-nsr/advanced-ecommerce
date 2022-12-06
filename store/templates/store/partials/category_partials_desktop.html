@@ -1,0 +1,42 @@
+{% load static %}
+<nav class="nav-wrapper">
+    <ul>
+        {% for category in categories %}
+            {% if category.parent == None %}
+                <li class="mega-menu mega-menu-3-columns">
+                    <a href="{{ category.get_absolute_url }}"><i class="fal  text-danger"></i>{{ category.title }}</a>
+                    {% if category.children.all %}
+                        <ul class="row">
+                            {% for cat in category.children.all %}
+                                <li class="col-6">
+                                    <a href="{{ cat.get_absolute_url }}">{{ cat.title }} <i
+                                            class="fad fa-chevron-left"></i></a>
+                                    {% if cat.children.all %}
+                                        <ul class="row">
+                                            <li class="col-6">
+                                                <ul>
+                                                    {% for c in cat.children.all %}
+                                                        <li><a href="{{ c.get_absolute_url }}">{{ c.title }} <i
+                                                                class=""></i></a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                            {#                            <li class="col-6">#}
+                            {#                                    <a href="#">#}
+                            {#                                        <img src="{{ category.image.url }}" class="rounded" alt="amazing-offer">#}
+                            {#                                    </a>#}
+                            {#                                </li>#}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        {#        <li>#}
+        {#            <a href="#"><i class="fal fa-shield-check text-success"></i>همتای من</a>#}
+        {#        </li>#}
+    </ul>
+</nav>

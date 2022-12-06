@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px;">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-xl-9 col-lg-8 col-md-8 mb-md-0 mb-3">
+                    <div class="checkout-section shadow-around">
+                        <div class="checkout-section-content">
+                            <div class="cart-items">
+                                {% for data in cart %}
+                                    <div class="cart-item py-4 px-3">
+                                        <div class="item-thumbnail">
+                                            <a href="{{ data.variant.product.get_absolute_url }}">
+                                                <img src="{{ data.variant.product.image.url }}" alt="item">
+                                            </a>
+                                        </div>
+                                        <div class="item-info flex-grow-1">
+                                            <div class="item-title">
+                                                <h2>
+                                                    <a href="{{ data.variant.product.get_absolute_url }}">{{ data.variant.title }}</a>
+                                                </h2>
+                                            </div>
+                                            <div class="item-detail">
+                                                <ul>
+                                                    {% if data.variant.console_variant %}
+                                                        <li>
+                                                            <i class="far fa-shield-check text-muted"></i>
+                                                            <span>{{ data.variant.console_variant.title }}</span>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if data.variant.controller_variant %}
+                                                        <li>
+                                                            <i class="far fa-shield-check text-muted"></i>
+                                                            <span>{{ data.variant.controller_variant.title }}</span>
+                                                        </li>
+                                                    {% endif %}
+                                                    <li>
+                                                        <i class="far fa-clipboard-check text-primary"></i>
+                                                        <span>تعداد:</span>
+                                                        {{ data.quantity }}
+                                                    </li>
+                                                </ul>
+                                                <div class="item-quantity--item-price">
+                                                    <div class="item-quantity">
+
+                                                        <button class="item-remove-btn mr-3">
+                                                            <a href="{% url 'cart:remove_from_cart' data.variant.id %}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                                حذف
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                    <div class="item-price">
+                                                        {% if data.product.guarantee != 'None' %}
+                                                            <span class="text-sm mr-1">قیمت</span>
+                                                            {{ data.variant.total_price|intcomma:False }}
+                                                            <span class="text-sm mr-1">تومان</span>
+                                                            <br>
+                                                            <span class="text-sm mr-1">جمع کل</span>
+                                                            {% widthratio data.variant.total_price 1 data.quantity %}
+                                                            <span class="text-sm mr-1">تومان</span>
+                                                        {% else %}
+                                                            <span class="text-sm mr-1">قیمت واحد</span>
+                                                            {{ data.product.total_price|intcomma:False }}
+                                                            <span class="text-sm mr-1">تومان</span>
+                                                            <br>
+                                                            <span class="text-sm mr-1">جمع کل</span>
+                                                            {% widthratio data.product.total_price 1 data.quantity %}
+                                                            <span class="text-sm mr-1">تومان</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <div class="alert alert-info m-1 text-center" role="alert">
+                                        <h4 class="alert-heading">
+                                            <i class="fa fa-shopping-basket"></i>
+                                            سبد خرید شما خالی است
+                                        </h4>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if cart %}
+                    <div class="col-xl-3 col-lg-4 col-md-4">
+                        <div class="shadow-around pt-3">
+                            <div class="d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted">قیمت کالاها (
+                                    {{ qty }}
+                                )
+                            </span>
+                                <span class="text-muted">
+{#                                    {{ cart.get_total_price|intcomma:False }}#}
+                                    {{ total_price|intcomma:False }}
+                                    <span class="text-sm">تومان</span>
+                                </span>
+                            </div>
+{#                            <div class="d-flex justify-content-between px-3 py-2">#}
+{#                                <span class="text-muted">تخفیف کالاها</span>#}
+{#                                <span class="text-danger">#}
+{#                                {{ discount|intcomma:False }}#}
+{#                                    <span class="text-sm">تومان</span>#}
+{#                                </span>#}
+{#                            </div>#}
+                            <hr>
+                            <div class="d-flex justify-content-between px-3 py-2">
+                                <span class="font-weight-bold">جمع</span>
+                                <span class="font-weight-bold">
+                                    {{ total_price|intcomma:False }}
+                                    <span class="text-sm">تومان</span>
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between px-3 py-2">
+                                <span class="font-weight-bold">مبلغ قابل پرداخت</span>
+                                <span class="font-weight-bold">
+                                    {{ total_price|intcomma:False }}
+                                    <span class="text-sm">تومان</span>
+                                </span>
+                            </div>
+                            <div class="d-flex px-3 py-4">
+                                <a href="{% url 'order:order_form' %}" class="btn btn-danger btn-block py-2">ادامه
+                                    فرایند
+                                    خرید</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    {#    <script>#}
+    {#        function add(id) {#}
+    {#            const num = $("#number" + id).val();#}
+    {#            const num2 = $("#number" + id).attr('max');#}
+    {#            quantity = 0;#}
+    {#            quantity += parseInt(num) + 1;#}
+    {#            if (quantity <= num2) {#}
+    {#                $("#number" + id).val(quantity);#}
+    {#                $.ajax({#}
+    {#                    url: "{% url 'cart:add_single' %}",#}
+    {#                    type: 'GET',#}
+    {#                    data: {variant_id: id, quantity: quantity},#}
+    {#                    success: function (data) {#}
+    {##}
+    {#                        location.reload();#}
+    {#                    }#}
+    {#                })#}
+    {#            }#}
+    {#        }#}
+    {##}
+    {#        function remove(id) {#}
+    {#            const num = $("#number" + id).val();#}
+    {#            const num2 = $("#number" + id).attr('min');#}
+    {#            quantity = 0;#}
+    {#            quantity += parseInt(num) - 1;#}
+    {#            if (quantity >= num2) {#}
+    {#                $("#number" + id).val(quantity);#}
+    {#                $.ajax({#}
+    {#                    url: "{% url 'cart:remove_single' %}",#}
+    {#                    type: 'GET',#}
+    {#                    data: {variant_id: id, quantity: quantity},#}
+    {#                    success: function (data) {#}
+    {#                        location.reload();#}
+    {#                    }#}
+    {#                })#}
+    {#            }#}
+    {#        }#}
+    {#    </script>#}
+{% endblock %}

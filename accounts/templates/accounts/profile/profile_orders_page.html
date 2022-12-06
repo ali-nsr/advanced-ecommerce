@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px; transform: none;">
+        <div class="container" style="transform: none;">
+            <div class="row mb-5" style="transform: none;">
+                {% include 'accounts/profile/sidebar.html' %}
+                <div class="col-lg-9 col-md-8">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="section-title mb-2">
+                                تاریخچه سفارشات
+                            </div>
+                            <section class="shadow-around p-3">
+                                <div class="d-none d-sm-block">
+                                    <ul class="nav nav-tabs" id="orders-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link active" id="wait-for-payment-tab" data-toggle="tab"
+                                               href="#wait-for-payment" role="tab" aria-controls="wait-for-payment"
+                                               aria-selected="true">
+                                                پرداخت شده
+                                                <span class="badge badge-secondary">{{ paid_orders.count }}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="pain-in-progress-tab" data-toggle="tab"
+                                               href="#pain-in-progress" role="tab" aria-controls="pain-in-progress"
+                                               aria-selected="false">
+                                                در حال ارسال
+                                                <span class="badge badge-secondary">{{ sending_orders.count }}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="delivered-tab" data-toggle="tab" href="#delivered"
+                                               role="tab" aria-controls="delivered" aria-selected="false">
+                                                تحویل داده شده
+                                                <span class="badge badge-secondary">{{ received_orders.count }}</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="canceled-tab" data-toggle="tab" href="#canceled"
+                                               role="tab" aria-controls="canceled" aria-selected="false">
+                                                پرداخت نشده
+                                                <span class="badge badge-secondary">{{ canceled_orders.count }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="d-sm-none tab-responsive-order-list" style="height: 50px;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle btn-block" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            لیست سفارشات بر اساس
+                                        </button>
+                                        <div class="dropdown-menu shadow-around w-100"
+                                             aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" data-toggle="tab" href="#wait-for-payment"
+                                               role="tab" aria-controls="wait-for-payment" aria-selected="true">در
+                                                انتظار پرداخت</a>
+                                            <a class="dropdown-item" data-toggle="tab" href="#pain-in-progress"
+                                               role="tab" aria-controls="pain-in-progress" aria-selected="false">در
+                                                حال پردازش</a>
+                                            <a class="dropdown-item" data-toggle="tab" href="#delivered" role="tab"
+                                               aria-controls="delivered" aria-selected="false">تحویل داده شده</a>
+                                            <a class="dropdown-item" data-toggle="tab" href="#canceled" role="tab"
+                                               aria-controls="canceled" aria-selected="false">پرداخت نشده</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-content" id="orders-tab">
+                                    <div class="tab-pane fade show active" id="wait-for-payment" role="tabpanel"
+                                         aria-labelledby="wait-for-payment-tab">
+                                        <section class="table--order shadow-around mt-4">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>شماره سفارش</th>
+                                                        <th>تاریخ ثبت سفارش</th>
+                                                        <th>مبلغ کل</th>
+                                                        <th>وضعیت پرداخت</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data in paid_orders %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td class="order-code">{{ data.order_code }}</td>
+                                                            <td>{{ data.jalali_created_date }}</td>
+                                                            <td>{{ data.total|intcomma:False }} تومان</td>
+                                                            <td>پرداخت شده</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="tab-pane fade" id="pain-in-progress" role="tabpanel"
+                                         aria-labelledby="pain-in-progress-tab">
+                                        <section class="table--order shadow-around mt-4">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>شماره سفارش</th>
+                                                        <th>تاریخ ثبت سفارش</th>
+                                                        <th>مبلغ کل</th>
+                                                        <th>وضعیت سفارش</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data in sending_orders %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td class="order-code">{{ data.order_code }}</td>
+                                                            <td>{{ data.jalali_created_date }}</td>
+                                                            <td>{{ data.total|intcomma:False }} تومان</td>
+                                                            <td>در حال ارسال</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="tab-pane fade" id="delivered" role="tabpanel"
+                                         aria-labelledby="delivered-tab">
+                                        <section class="table--order shadow-around mt-4">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>شماره سفارش</th>
+                                                        <th>تاریخ ثبت سفارش</th>
+                                                        <th>مبلغ کل</th>
+                                                        <th>وضعیت سفارش</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data in received_orders %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td class="order-code">{{ data.order_code }}</td>
+                                                            <td>{{ data.jalali_created_date }}</td>
+                                                            <td>{{ data.total|intcomma:False }} تومان</td>
+                                                            <td>تحویل داده شده</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="canceled" role="tabpanel"
+                                         aria-labelledby="canceled-tab">
+                                        <section class="table--order shadow-around mt-4">
+                                            <div class="table-responsive">
+                                                <div class="alert alert-warning">
+                                                    <p class="m-auto">
+                                                        چنانچه سفارش خود را در اسرع وقت پرداخت نکنید با توجه به تغییرات
+                                                        قیمت سغارش شما حذف میشود.
+                                                    </p>
+                                                </div>
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>شماره سفارش</th>
+                                                        <th>تاریخ ثبت سفارش</th>
+                                                        <th>مبلغ کل</th>
+                                                        <th>وضعیت سفارش</th>
+                                                        <th>پرداخت</th>
+                                                        <th>جزییات</th>
+                                                        <th>حذف</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data in canceled_orders %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td class="order-code">{{ data.order_code }}</td>
+                                                            <td>{{ data.jalali_created_date }}</td>
+                                                            <td>{{ data.get_day_total_for_user|intcomma:False }} تومان</td>
+                                                            <td>لغو شده</td>
+                                                            <td>
+                                                                <a href="{% url 'order:request_payment' data.id data.get_day_total %}"
+                                                                   class="btn btn-outline-success btn-sm">
+                                                                    پرداخت
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button"
+                                                                        class="btn btn-outline-info btn-sm"
+                                                                        data-toggle="modal"
+                                                                        data-target="#exampleModal{{ data.id }}">
+                                                                    جزییات
+                                                                </button>
+                                                                <!-- Modal -->
+                                                                <div class="modal fade" id="exampleModal{{ data.id }}"
+                                                                     tabindex="-1" role="dialog"
+                                                                     aria-labelledby="exampleModalLabel"
+                                                                     aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <table>
+                                                                                    <thead>
+                                                                                    <tr>
+                                                                                        <th>#</th>
+                                                                                        <th>نام محصول</th>
+                                                                                        <th>گارانتی</th>
+                                                                                        <th>گارانتی دسته</th>
+                                                                                        <th>تعداد</th>
+                                                                                        <th>قیمت</th>
+                                                                                    </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                    {% for obj in data.item_orders.all %}
+                                                                                        <tr>
+                                                                                            <td>{{ forloop.counter }}</td>
+                                                                                            <td>{{ obj.variant.title }}</td>
+                                                                                            {% if obj.variant.console_variant %}
+                                                                                                <td>{{ obj.variant.console_variant }}</td>
+                                                                                            {% else %}
+                                                                                                <td>----</td>
+                                                                                            {% endif %}
+                                                                                            {% if obj.variant.controller_variant %}
+                                                                                                <td>{{ obj.variant.controller_variant }}</td>
+                                                                                            {% else %}
+                                                                                                <td>----</td>
+                                                                                            {% endif %}
+                                                                                            <td>{{ obj.quantity }}</td>
+                                                                                            <td>{{ obj.get_day_price|intcomma:False }}
+                                                                                                تومان
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                    {% endfor %}
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">بستن
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <form action="{% url 'accounts:order_delete' data.id %}"
+                                                                      method="post">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit"
+                                                                            class="btn btn-outline-danger btn-sm">حذف
+                                                                        سفارش
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+    </main>
+{% endblock %}

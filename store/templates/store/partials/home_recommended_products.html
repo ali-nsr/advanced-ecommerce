@@ -1,0 +1,116 @@
+{% load thumbnail %}
+{% load humanize %}
+<div class="row align-items-center mb-4">
+    <div class="col-lg-12 order-1 order-lg-2">
+        <div class="offer-slider-wrapper">
+            <div class="offer-slider-title">پیشنهاد های همتا گیم</div>
+            <div class="row">
+                <div class="col-12 mb-1">
+                    <div class="swiper-container offer-slider">
+                        <div class="swiper-wrapper">
+                            {% for data in offer_sliders %}
+                                <div class="swiper-slide">
+                                    <div class="row align-items-center pb-3">
+                                        <div class="col-sm-6 col-12 order-2 order-sm-1">
+                                            <div class="product-title">
+                                                <a href="{{ data.product.get_absolute_url }}">
+                                                    {{ data.product.title }}
+                                                </a><br>
+                                                <a href="{{ data.product.get_absolute_url }}">
+                                                    {{ data.product.english_title }}
+                                                </a>
+                                            </div>
+                                            <div class="product-price">
+                                                <del>{{ data.product.unit_price|intcomma:False }} تومان</del>
+                                                {{ data.product.total_price|intcomma:False }} تومان
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-12 order-1 order-sm-2">
+                                            <div class="offer-slide-content">
+                                                <div class="product-thumbnail">
+                                                    <a href="{{ data.product.get_absolute_url }}">
+                                                        {% thumbnail data.product.image "140x140" crop="center" as img %}
+                                                            <img src="{{ img.url }}" alt=""
+                                                                 title="">
+                                                        {% endthumbnail %}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center pb-4">
+                <div class="col-lg-8 mt-2 mb-4 mb-lg-0">
+                    <div class="offer-slider-thumbs-wrapper">
+                        <div class="px-0 px-sm-5">
+                            <div class="swiper-container offer-slider-thumbs">
+                                <div class="swiper-wrapper">
+                                    {% for data in offer_sliders %}
+                                        <div class="swiper-slide">
+                                            {% thumbnail data.product.image "80x80" crop="center" as img %}
+                                                <img src="{{ img.url }}" alt=""
+                                                     title="">
+                                            {% endthumbnail %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- Add Pagination -->
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="offer-slider-button-next"><i class="far fa-chevron-left"></i></div>
+                        <div class="offer-slider-button-prev"><i class="far fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div id="event-box" class="d-flex justify-content-center">
+
+                        <div class="offer-slider-title">
+                            <ul id="countdown-1" class="countdown">
+                                <span id="days" class="m-1"></span>
+                                <span id="hours" class="m-1"></span>
+                                <span id="minutes" class="m-1"></span>
+                                <span id="seconds" class="m-1"></span>
+                            </ul>
+                        </div>
+
+                        {#                <div id="event-box">{{ when.when|date:"M d, Y H:m:s" }}</div>#}
+                        {##}
+                        {#                <div id="countdown-box">#}
+                        {#                    <div class="offer-slider-title text-info"></div>#}
+                        {#                    <div class="spinner-border" role="status"></div>#}
+                        {#                </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#<script>#}
+{#    const eventBox = document.getElementById('event-box-hamtagame')#}
+{#    const countdownBox = document.getElementById('countdown-box-hamtagame')#}
+{#    const eventDate = Date.parse(eventBox.textContent)#}
+{#    const myCountdown = setInterval(() => {#}
+{#        const now = new Date().getTime()#}
+{#        const diff = eventDate - now#}
+{#        const d = Math.floor(eventDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)))#}
+{#        const h = Math.floor((eventDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60))) % 24)#}
+{#        const m = Math.floor((eventDate / (1000 * 60) - (now / (1000 * 60))) % 60)#}
+{#        const s = Math.floor((eventDate / (1000) - (now / (1000))) % 60)#}
+{#        if (diff > 0) {#}
+{#            countdownBox.innerHTML = d + "days, " + h + " hours, " + m + " minutes, " + s + " seconds"#}
+{#        } else {#}
+{#            clearInterval(myCountdown)#}
+{#            countdownBox.innerHTML = "countdown completed"#}
+{#        }#}
+{#    }, 1000)#}
+{#</script>#}
+
+
+

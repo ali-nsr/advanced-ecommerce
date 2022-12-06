@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px; transform: none;">
+        <div class="container" style="transform: none;">
+            <div class="row mb-5" style="transform: none;">
+                {% include 'accounts/profile/sidebar.html' %}
+                <div class="col-lg-9 col-md-8">
+                    <div class="section-title mb-2">
+                        تیکت های من
+                    </div>
+                    <div class="shadow-around">
+                        <form class="comment-form row" action="{% url 'ticket:send_ticket' %}"
+                              method="post">
+                            {% csrf_token %}
+                            <div class="form-group col-lg-12 col-md-12 mt-2">
+                                <input type="text" name="title" class="form-control col-lg-9 col-md-9 m-auto"
+                                       placeholder="عنوان تیکت" maxlength="250"
+                                       required>
+                                <textarea class="form-control col-lg-9 col-md-9 m-auto"
+                                          style="margin-top: 3px !important;" name="content" rows="8"
+                                          placeholder="متن تیکت" required></textarea>
+                            </div>
+                            <div class="form-submit col-lg-9 col-md-9 m-auto">
+                                <button class="btn btn-success btn-block" type="submit">ارسال</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

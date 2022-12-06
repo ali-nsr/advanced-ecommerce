@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block window_title %}{% endblock %}
+
+{% block content %}
+    <main class="page-content">
+        <div class="container">
+            <div class="auth-wrapper">
+                <div class="auth-form shadow-around">
+                    <div class="site-logo">
+                        <a href="#">
+                            <img src="{{ site_setting.site_header_logo }}"
+                                 alt="{{ site_setting.site_header_logo_alt }}">
+                        </a>
+                    </div>
+                    <div class="auth-form-title">
+                        ثبت نام و تایید کد با موفقیت انجام شد. به همتا گیم خوش آمدید
+                    </div>
+                    <div class="auth-form-footer">
+                        اکنون میتوانید به حساب کاربری خود
+                        <a href="{% url 'accounts:login_page' %}" class="link--with-border-bottom">
+                            وارد
+                        </a>
+                         شوید.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

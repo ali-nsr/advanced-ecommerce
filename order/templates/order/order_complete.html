@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px;">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-xl-9 col-lg-8 col-md-8 mb-md-0 mb-3">
+                    <div class="checkout-section shadow-around">
+                        <div class="checkout-message">
+                            <div class="checkout-message-success mb-3">
+                                <div class="icon-message success-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                سفارش شما با موفقیت ثبت گردید.
+                                <br>
+                                کد پیگیری سفارش شما: <span class="order-code">{{ order.order_code }}</span>
+                            </div>
+                            <div class="text-center text-muted">
+                                <p class="mb-4">
+                                    کاربر گرامی، {{ request.user.username }} سفارش شما با موفقیت ثبت گردید. برای پرداخت
+                                    و ثبت نهایی روی گزینه پرداخت کلیک کنید.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                    <div class="shadow-around pt-3">
+                        <div class="d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted">نام تحویل گیرنده:</span>
+                            <span class="text-muted">
+                                    {{ order.user.full_name }}
+                                </span>
+                        </div>
+                        <div class="d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted">شماره تماس :</span>
+                            <span class="text-danger">
+                                    {{ order.user.phone }}
+                                </span>
+                        </div>
+                        <div class="d-flex justify-content-between px-3 py-2">
+                            <span class="text-muted">هزینه حمل و نقل :</span>
+                            <span class="text-danger">
+                                    {{ order.shipping_price|intcomma:False }} تومان
+                                </span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between px-3 py-2">
+                            <span class="font-weight-bold">مبلغ کل:</span>
+                            <span class="font-weight-bold">
+                                    {{ order.total|intcomma:False }}
+                                    <span class="text-sm">تومان</span>
+                                </span>
+                        </div>
+                        <hr>
+                        <div class="px-3 py-2">
+                            <span class="text-muted d-block">آدرس :</span>
+                            <span class="text-info">
+                                    {{ order.province }}
+                                    {{ order.city }}
+                                    {{ order.address }}
+                                </span>
+                        </div>
+                        <div class="px-3 py-4">
+                            <a href="{% url 'order:request_payment' order.id order.get_day_total %}"
+                               class="d-flex align-items-center justify-content-center px-4 py-2 btn btn-primary">
+                                پرداخت
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

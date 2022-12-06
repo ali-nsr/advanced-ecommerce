@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px;">
+        <div class="container">
+            {% if compares.compare %}
+                <div class="shadow-around">
+                    <div class="table-responsive">
+                        <table class="table compare-table product-detail text-center mb-0">
+                            <tbody>
+                            <tr class="pr_image">
+                                <td class="row_title">تصویر محصول</td>
+                                {% for data in compares %}
+                                    <td class="row_img"><img src="{{ data.product.image.url }}" class="img-fluid"
+                                                             alt="compare-img">
+                                {% endfor %}
+                            </tr>
+                            <tr class="pr_title">
+                                <td class="row_title">نام محصول</td>
+                                {% for data in compares %}
+                                    <td class="product-title">
+                                        <h1><a href="{{ data.product.get_absolute_url }}">{{ data.product.title }}</a></h1>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr class="pr_price">
+                                <td class="row_title">قیمت محصول</td>
+                                {% for data in compares %}
+                                    <td class="product-price">
+                                        <div class="product-price-info justify-content-center">
+                                            {% if data.product.discount %}
+                                                <div class="product-price-off">
+                                                    %{{ data.product.discount }} <span>تخفیف</span>
+                                                </div>
+                                                <div class="product-price-prev">
+                                                    {{ data.product.unit_price|intcomma:False }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-price-real text-center">
+                                            <div class="product-price-raw">{{ data.product.total_price|intcomma:False }}</div>
+                                            تومان
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr class="pr_rating">
+                                <td class="row_title">امتیاز محصول</td>
+                                {% for data in compares %}
+                                    <td>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val"
+                                                     style="width: {% widthratio data.product.avg_review 1 20 %}%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr class="description">
+                                <td class="row_title">توضیحات محصول</td>
+                                {% for data in compares %}
+                                    <td class="row_text">
+                                        <p>{{ data.product.description|truncatewords:100|safe }}</p>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+{#                            <tr class="demintion">#}
+                            {#                                <td class="row_title">ابعاد</td>#}
+                            {#                                {% for data in compares %}#}
+                            {#                                    <td class="row_text">#}
+                            {#                                        {{ data.product.length }}x{{ data.product.width }}x{{ data.product.height }}#}
+                            {#                                    </td>#}
+                            {#                                {% endfor %}#}
+                            {#                            </tr>#}
+                            <tr class="pr_stock">
+                                <td class="row_title">تعداد موجود</td>
+                                {% for data in compares %}
+                                    <td class="row_stock"><span
+                                            class="in-stock">
+                                        {% for d in data.product.product_variant.all %}
+                                            {% if forloop.first %}
+                                                {{ d.v_amount }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+{#                            <tr class="pr_dimensions">#}
+                            {#                                <td class="row_title">ابعاد</td>#}
+                            {#                                {% for data in compares %}#}
+                            {#                                    <td class="row_dimensions">7.8 × 74.7 × 158.5 میلی‌متر</td>#}
+                            {#                                {% endfor %}#}
+                            {#                            </tr>#}
+                            <tr class="pr_remove">
+                                <td class="row_title"></td>
+                                {% for data in compares %}
+                                    <td class="row_remove">
+                                        <a href="{% url 'compare:remove_compare' data.product.slug %}"><span>حذف از لیست</span>
+                                            <i class="fa fa-times"></i></a>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center" role="alert">
+                    محصولی در لیست مقایسه شما وجود ندارد.
+                </div>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load thumbnail %}
+{% block window_title %}همتا گیم{% endblock %}
+{% block meta_description %}{{ home_seo.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ home_seo.meta_keywords }}{% endblock %}
+{% block meta_robots %}index, follow{% endblock %}
+{% block link_canonical %}https://hamtagame.ir{% endblock %}
+{% block content %}
+    <main class="page-content">
+        <div class="container">
+            {% include 'store/partials/home_slider.html' %}
+            {% if offer_sliders %}
+                {% include 'store/partials/home_recommended_products.html' %}
+            {% endif %}
+            {% for component in components %}
+                <section class="product-carousel in-box">
+                    <div class="section-title">
+                        {% thumbnail component.image "40x40" crop="center" as img %}
+                            <img src="{{ img.url }}" alt=""
+                                 title="">
+                        {% endthumbnail %}
+                        {{ component.title }}
+                    </div>
+                    <div class="swiper-container slider-lg">
+                        <div class="swiper-wrapper">
+                            {% for data in component.positions.all %}
+                                <div class="swiper-slide">
+                                    <div class="product-card">
+                                        <div class="product-card-top">
+                                            <a href="{{ data.get_absolute_url }}" class="product-image">
+                                                {% thumbnail data.image "100x100" crop="center" as img %}
+                                                    <img src="{{ img.url }}" alt=""
+                                                         title="">
+                                                {% endthumbnail %}
+                                            </a>
+                                        </div>
+                                        <div class="product-card-middle">
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val"
+                                                         style="width: {% widthratio data.avg_review 1 20 %}%;"></div>
+                                                </div>
+                                            </div>
+                                            <h6 class="product-name">
+                                                <a href="{{ data.get_absolute_url }}">{{ data.title }}</a>
+                                                <a href="">{{ data.product_variant.variant.discount_variant }}</a>
+                                            </h6>
+                                            <div class="product-price product-price-clone">{{ data.total_price|intcomma:False }}
+                                                تومان
+                                            </div>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-price">
+                                                {{ data.total_price|intcomma:False }} تومان
+                                            </div>
+                                            <a href="{{ data.get_absolute_url }}" class="btn-add-to-cart">
+                                                <i class="fad fa-product-hunt"></i>
+                                                {{ data.english_title }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </section>
+            {% endfor %}
+            <div class="row mb-5">
+                {% for article in latest_articles %}
+                    <div class="col-md-3 col-6 mb-lg-0 mb-3">
+                        <div class="banner">
+                            <a href="{{ article.get_absolute_url }}">
+                                {% thumbnail article.image "250x200" crop="center" as img %}
+                                    <img src="{{ img.url }}" alt="{{ article.image_alt }}"
+                                         title="{{ article.image_alt }}">
+                                {% endthumbnail %}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

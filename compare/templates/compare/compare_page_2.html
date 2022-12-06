@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px;">
+        <div class="container">
+            <div class="compare">
+                <div class="compare-products">
+                    <section class="product-carousel mb-5">
+                        <div class="swiper-container slider-md swiper-container-initialized swiper-container-horizontal swiper-container-rtl">
+                            <div class="swiper-wrapper"
+                                 style="transform: translate3d(130.429px, 0px, 0px); transition-duration: 0ms;">
+                                {% for data in compares %}
+                                    <div class="swiper-slide swiper-slide-active"
+                                         style="width: 250.857px; margin-left: 10px;">
+                                        <div class="product-card">
+                                            <div class="product-card-top">
+                                                <a href="" class="product-image">
+                                                    <img src="{{ data.product.image.url }}" alt="product image">
+                                                </a>
+                                                <div class="product-card-actions">
+                                                    <button class="add-to-wishlist"><i class="fas fa-heart"></i>
+                                                    </button>
+                                                    <button class="add-to-compare added"><i class="fas fa-random"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="product-card-middle">
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 65%;"></div>
+                                                    </div>
+                                                </div>
+                                                <h6 class="product-name">
+                                                    <a href="#" class="font-weight-bold">میز تحریر تاشوو تنظیم شو میلاد
+                                                        سفید
+                                                        70</a>
+                                                </h6>
+                                                <div class="product-price product-price-clone">650,000 تومان</div>
+                                            </div>
+                                            <div class="product-price">
+                                                4,500,000 تومان
+                                            </div>
+                                            <div class="py-3">
+                                                <a href="#" class="btn btn-primary btn-block">
+                                                    <i class="fad fa-cart-plus"></i>
+                                                    افزودن به سبد خرید
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next swiper-button-disabled" tabindex="0" role="button"
+                                 aria-label="Next slide" aria-disabled="true"></div>
+                            <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"
+                                 aria-disabled="false"></div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                    </section>
+                    {% for data in compares %}
+                        {% for d in data.product.product_compares.all %}
+                        <h4 class="compare-quick-title">{{ d.title }}</h4>
+                        <ul class="compare-quick-list">
+                            {% for e in d.title.compare_specifications.all %}
+                            <li>
+                                <div class="compare-list-title">
+                                    {{ e.title_1 }}
+                                </div>
+                            </li>
+                            <li>
+                                {% for r in d.title.compare_specifications.all %}
+                                <div class="compare-list-value"><span class="block">{{ r.title_2 }}</span>
+                                </div>
+                                    {% endfor %}
+                            </li>
+
+                        </ul>
+                            {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

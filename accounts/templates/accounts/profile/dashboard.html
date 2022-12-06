@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px; transform: none;">
+        <div class="container" style="transform: none;">
+            <div class="row mb-5" style="transform: none;">
+                {% include 'accounts/profile/sidebar.html' %}
+                <div class="col-lg-9 col-md-8">
+                    <div class="row mb-4">
+                        <div class="col-lg-6 mb-lg-0 mb-3">
+                            <div class="section-title mb-2">
+                                اطلاعات شخصی
+                            </div>
+                            <section class="shadow-around p-3">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="text-sm text-muted">نام و نام خانوادگی:</div>
+                                        <div class="text-dark font-weight-bold">{{ request.user.full_name }}</div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="text-sm text-muted">پست الکترونیک:</div>
+                                        <div class="text-dark font-weight-bold">{{ request.user.email }}</div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="text-sm text-muted">شماره تلفن همراه:</div>
+                                        <div class="text-dark font-weight-bold">{{ request.user.phone }}</div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="text-sm text-muted">استان:</div>
+                                        <div class="text-dark font-weight-bold">
+                                            {% if request.user.province %}
+                                                {{ request.user.province }}
+                                            {% else %}
+                                                لطفا استان خود را وارد کنید.
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="text-sm text-muted">شهر:</div>
+                                        <div class="text-dark font-weight-bold">
+                                            {% if request.user.city %}
+                                                {{ request.user.city }}
+                                            {% else %}
+                                                لطفا شهر خود را وارد کنید.
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {#                                    <div class="col-lg-6 mb-4">#}
+                                    {#                                        <div class="text-sm text-muted">دریافت خبرنامه:</div>#}
+                                    {#                                        <div class="text-dark font-weight-bold">خیر</div>#}
+                                    {#                                    </div>#}
+                                    <div class="col-12">
+                                        <div class="text-center">
+                                            <a href="{% url 'accounts:profile_info' %}"
+                                               class="link--with-border-bottom">
+                                                <i class="far fa-edit"></i>
+                                                ویرایش اطلاعات شخصی
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-6 mb-lg-0 mb-3">
+                            <div class="section-title mb-2">
+                                لیست آخرین علاقه‌مندی‌ها
+                            </div>
+                            <section class="shadow-around p-3">
+                                <div class="row">
+
+                                    {% for product in favorite_products %}
+                                        <div class="col-12 mb-4">
+                                            <div class="product-list-section">
+                                                <div class="product-thumbnail">
+                                                    <a href="{{ product.get_absolute_url }}">
+                                                        <img src="{{ product.image.url }}"
+                                                             alt="product title">
+                                                    </a>
+                                                </div>
+                                                <div class="product-info">
+                                                    <div class="product-title">
+                                                        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                                    </div>
+                                                    <div class="text-danger">
+                                                        {{ product.total_price|intcomma:False }}
+                                                        <span class="text-sm">تومان</span>
+                                                    </div>
+                                                    <form action="{% url 'store:favourite_product' product.slug %}">
+                                                        <button type="submit" class="remove-item">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="col-12">
+                                            <div class="text-center">
+                                            <span class="link--with-border-bottom">
+                                                <i class="far fa-heart"></i>
+                                                در حال حاضر محصولی را به لیست علاقه مندی خود اضافه نکرده اید.
+                                            </span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {% if favorite_products %}
+                                        <div class="col-12">
+                                            <div class="text-center">
+                                                <a href="{% url 'accounts:favourite' %}"
+                                                   class="link--with-border-bottom">
+                                                    <i class="far fa-edit"></i>
+                                                    مشاهده و ویرایش لیست مورد علاقه
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% load static %}
+{% load humanize %}
+{% load store_tags %}
+{% load thumbnail %}
+<header class="page-header">
+    <div class="top-page-header">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="contact-list">
+                    <ul>
+                        <li><i class="fas fa-phone-rotary"></i><a
+                                href="tel: {{ site_setting.site_phone }}">{{ site_setting.site_phone }}</a></li>
+                        <li><i class="fas fa-envelope"></i><a
+                                href="mailto: {{ site_setting.site_email }}">{{ site_setting.site_email }}</a></li>
+                    </ul>
+                </div>
+                <div class="top-header-menu">
+                    <ul>
+                        <li><a href="{% url 'blog:blog_home' %}"><i class="fa fa-gamepad text-info"></i> مجله</a></li>
+                        {% if request.user.is_superuser %}
+                            <li><a href="/admin" target="_blank">پنل ادمین</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="bottom-page-header">
+            <div class="d-flex align-items-center">
+                <div class="site-logo">
+                    <a href="{% url 'store:home_page' %}">
+                        {% thumbnail site_setting.site_header_logo "50x50" crop="center" as img %}
+                            <img src="{{ img.url }}" alt="{{ site_setting.site_header_logo_alt }}">
+                        {% endthumbnail %}
+                    </a>
+                </div>
+                <div class="search-box">
+                    <form action="{% url 'store:search' %}" method="get">
+                        <input type="search" id="q" name="q" placeholder="نام محصول یا برند را جستجو کنید...">
+                        <i class="far fa-search"></i>
+                    </form>
+                </div>
+            </div>
+            <div class="user-items">
+                <div class="user-item">
+                    <a href="{% url 'accounts:favourite' %}">
+                        <i class="fal fa-heart"></i>
+                        <span class="bag-items-number">
+                            {% if request.user.is_authenticated %}
+                                {{ request.user.favourites_user.all.count }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </span>
+                    </a>
+                </div>
+                <div class="user-item cart-list">
+                    <a href="{% url 'cart:cart_detail' %}">
+                        <i class="fal fa-shopping-basket"></i>
+
+
+                        {% with total_qty=cart|length %}
+                            {% if total_qty > 0 %}
+                                <span class="bag-items-number">{{ total_qty }}</span>
+                            {% else %}
+                                <span class="bag-items-number">0</span>
+                            {% endif %}
+                        {% endwith %}
+
+
+                    </a>
+                    <ul>
+                        <li class="cart-items">
+                            {% if cart %}
+                                <ul class="do-nice-scroll">
+                                    {% for item in cart %}
+                                        <li class="cart-item">
+                                            <span class="d-flex align-items-center mb-2">
+                                                <a href="{{ item.variant.product.get_absolute_url }}">
+                                                    <img src="{{ item.variant.product.image.url }}"
+                                                         alt="{{ item.variant.product.image_alt }}">
+                                                </a>
+                                                <span>
+                                                    <a href="{{ item.variant.product.get_absolute_url }}">
+                                                        <span class="title-item">
+                                                            {{ item.variant.product.title }}
+                                                        </span>
+                                                    </a>
+                                                    {% if item.variant.console_variant %}
+                                                        <span class="d-flex align-items-center">
+                                                        گارانتی:
+                                                        <span>{{ item.variant.console_variant.title }}</span>
+                                                    </span>
+                                                    {% else %}
+                                                        <span class="d-flex align-items-center">
+                                                        گارانتی:
+                                                        <span>ندارد</span>
+                                                    </span>
+                                                    {% endif %}
+                                                    {% if item.variant.controller_variant %}
+                                                        <span class="d-flex align-items-center">
+                                                        گارانتی دسته:
+                                                        <span>{{ item.variant.controller_variant.title }}</span>
+                                                    </span>
+                                                    {% else %}
+                                                        <span class="d-flex align-items-center">
+                                                        گارانتی دسته:
+                                                        <span>ندارد</span>
+                                                    </span>
+                                                    {% endif %}
+                                                    <span class="d-flex align-items-center">
+                                                        تعداد:
+                                                        <span>{{ item.quantity }}</span>
+                                                    </span>
+                                                <span class="d-flex align-items-center">
+                                                        قیمت:
+                                                        <span class="price">{{ item.variant.total_price|intcomma:False }} تومان</span>
+                                                    </span>
+                                                <span class="d-flex align-items-center">
+                                                        قیمت کل:
+                                                        <span class="price">{% widthratio item.variant.total_price 1 item.quantity as total %}</span>
+                                                        <span class="price">{{ total|intcomma:False }} تومان</span>
+                                                    </span>
+                                            </span>
+
+                                    <a href="{% url 'cart:remove_from_cart' item.variant.id %}"
+                                       class="btn btn-outline-info">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                        <li class="cart-footer d-flex align-items-center justify-content-between">
+
+                            {% if cart %}
+                                <span class="d-flex flex-column">
+                                        <span>مبلغ کل:</span>
+                                        <span class="total">{{ cart.get_total_price|intcomma:False }} تومان</span>
+                                    </span>
+                                <span class="d-block text-center px-2">
+                                        <a href="{% url 'cart:cart_detail' %}" class="btn-cart">
+                                            مشاهده سبد خرید
+                                        </a>
+                                    </span>
+                            {% else %}
+                                <span class="badge badge-info text-center">
+                                        سبد خرید شما خالی است.
+                                    </span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-item account">
+                    {% if request.user.is_authenticated %}
+                        <a href="#">
+                            {{ request.user.username }}
+                            <i class="fad fa-chevron-down text-sm mr-1"></i>
+                        </a>
+                        <ul class="dropdown--wrapper">
+                            <li class="header-profile-dropdown-account-container">
+                                <a href="{% url 'accounts:dashboard' %}" class="d-block">
+                                        <span class="header-profile-dropdown-user">
+                                            <span class="header-profile-dropdown-user-img">
+                                                <img src="
+
+
+
+                                                        {% if request.user.image %}{{ request.user.image.url }}{% else %}{% static '' %}images/avatar/avatar.png{% endif %}">
+                                            </span>
+                                            <span class="header-profile-dropdown-user-info">
+                                                <p class="header-profile-dropdown-user-name">
+                                                    {{ request.user.username }}
+                                                </p>
+                                                <span class="header-profile-dropdown-user-profile-link">مشاهده حساب
+                                                    کاربری</span>
+                                            </span>
+                                        </span>
+                                </a>
+                            </li>
+                            <hr>
+                            <li>
+                                <a href="{% url 'accounts:dashboard' %}">
+                                    پروفایل
+                                </a>
+                            </li>
+                            <li class="text-success">
+                                <a href="{% url 'accounts:logout_page' %}">
+                                    خروج از حساب کاربری
+                                </a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <a href="{% url 'accounts:login_page' %}" class="btn-auth">
+                            <i class="fal fa-user-circle"></i>
+                            ورود و عضویت
+                        </a>
+                        <ul class="dropdown--wrapper">
+                            <li>
+                                <a href="{% url 'accounts:login_page' %}" class="dropdown--btn-primary">وارد شوید</a>
+                            </li>
+                            <li>
+                                <span>کاربر جدید هستید؟</span>
+                                <a href="{% url 'accounts:register_page' %}" class="border-bottom-dt">ثبت نام</a>
+                            </li>
+                            <hr>
+                        </ul>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% store_navbar_desktop %}
+    </div>
+    {% include 'messages.html' %}
+    {% if request.user.is_authenticated and not request.user.is_verify %}
+        <div class="alert alert-danger" role="alert">
+            کاریر گرامی، لطفا شماره همراه خود را <a href="{% url 'accounts:verify_register' %}">تایید</a> کنید.
+        </div>
+    {% endif %}
+</header>
+<!-- header responsive -->
+{% store_navbar_responsive %}
+{% include 'messages.html' %}
+{% if request.user.is_authenticated and not request.user.is_verify %}
+    <div class="alert alert-danger" role="alert">
+        کاریر گرامی، لطفا شماره همراه خود را <a href="{% url 'accounts:verify_register' %}">تایید</a> کنید.
+    </div>
+{% endif %}
+<!-- end header responsive -->

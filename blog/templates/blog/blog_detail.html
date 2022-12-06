@@ -1,0 +1,267 @@
+{% extends 'blog/blog_base.html' %}
+{% load thumbnail %}
+{% load convert_date_tags %}
+{% block blog_content %}
+    <section class="section pt-45 ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 offset-lg-1 mb-20">
+                    <!--Post-single-->
+                    <div class="post-single">
+                        <div class="post-single-image">
+                            {% thumbnail article.image "1200x1200" crop="center" as img %}
+                                <img src="{{ img.url }}" alt="inner-page-banner">
+                            {% endthumbnail %}
+                        </div>
+                        <div class="post-single-content">
+                            {% for category in article.categories.all %}
+                                <a href="" class="categorie">{{ category.name }}</a>
+                            {% endfor %}
+                            <h1 class="h4">{{ article.title }}</h1>
+                            <div class="post-single-info">
+                                <ul class="list-inline">
+                                    <li>{{ article.author.full_name }}</li>
+                                    <li class="dot"></li>
+                                    <li>{{ article.created_date | convert_to_jalali }}</li>
+                                    <li class="dot"></li>
+                                    <li>{{ comments_count }} دیدگاه</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="post-single-body">
+                            {{ article.content|safe }}
+                        </div>
+
+                        <div class="post-single-footer">
+                            <div class="tags">
+                                <ul class="list-inline">
+                                    {% for tag in article.tags.all %}
+                                        <li>
+                                            <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {#                            <div class="social-media">#}
+                            {#                                <ul class="list-inline">#}
+                            {#                                    <li>#}
+                            {#                                        <a href="#" class="color-facebook">#}
+                            {#                                            <i class="fab fa-facebook"></i>#}
+                            {#                                        </a>#}
+                            {#                                    </li>#}
+                            {#                                    <li>#}
+                            {#                                        <a href="#" class="color-instagram">#}
+                            {#                                            <i class="fab fa-instagram"></i>#}
+                            {#                                        </a>#}
+                            {#                                    </li>#}
+                            {#                                    <li>#}
+                            {#                                        <a href="#" class="color-twitter">#}
+                            {#                                            <i class="fab fa-twitter"></i>#}
+                            {#                                        </a>#}
+                            {#                                    </li>#}
+                            {#                                    <li>#}
+                            {#                                        <a href="#" class="color-youtube">#}
+                            {#                                            <i class="fab fa-youtube"></i>#}
+                            {#                                        </a>#}
+                            {#                                    </li>#}
+                            {#                                    <li>#}
+                            {#                                        <a href="#" class="color-pinterest">#}
+                            {#                                            <i class="fab fa-pinterest"></i>#}
+                            {#                                        </a>#}
+                            {#                                    </li>#}
+                            {#                                </ul>#}
+                            {#                            </div>#}
+                        </div>
+                    </div> <!--/-->
+
+
+                    <!--next & previous-posts-->
+                    <div class="row">
+                        {% if article.get_previous_by_created_date %}
+                            <div class="col-md-6">
+                                <div class="widget">
+                                    <div class="widget-next-post">
+                                        <div class="small-post">
+                                            <div class="image">
+                                                <a href="{{ article.get_previous_by_created_date.get_absolute_url }}">
+                                                    <img src="{{ article.get_previous_by_created_date.image.url }}"
+                                                         alt="{{ article.get_previous_by_created_date.image_alt }}">
+                                                </a>
+                                            </div>
+                                            <div class="content">
+                                                <div>
+                                                    <a class="link" href="">
+                                                        <i class="arrow_right"></i>نوشته قبلی</a>
+                                                </div>
+                                                <a href="{{ article.get_previous_by_created_date.get_absolute_url }}">{{ article.get_previous_by_created_date.title }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if article.get_next_by_created_date %}
+                            <div class="col-md-6">
+                                <div class="widget">
+                                    <div class="widget-previous-post">
+                                        <div class="small-post">
+                                            <div class="image">
+                                                <a href="{{ article.get_next_by_created_date.get_absolute_url }}">
+                                                    <img src="{{ article.get_next_by_created_date.image.url }}"
+                                                         alt="{{ article.get_next_by_created_date.image_alt }}">
+                                                </a>
+                                            </div>
+                                            <div class="content">
+                                                <div>
+                                                    <a class="link"
+                                                       href="{{ article.get_next_by_created_date.get_absolute_url }}">
+                                                        <span> نوشته بعدی</span>
+                                                        <span class="arrow_left"></span>
+                                                    </a>
+                                                </div>
+                                                <a href="{{ article.get_next_by_created_date.get_absolute_url }}">{{ article.get_next_by_created_date.title }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!--/-->
+
+
+                    {#                    <ul class="widget-comments">#}
+                    {#                        {% for comment in comments %}#}
+                    {#                            <li class="comment-item">#}
+                    {#                                <div class="content">#}
+                    {#                                    <ul class="info list-inline">#}
+                    {#                                        <li>{{ comment.user.full_name }}</li>#}
+                    {#                                        <li class="dot"></li>#}
+                    {#                                        <li>{{ comment.created_date }}</li>#}
+                    {#                                    </ul>#}
+                    {#                                    <p>{{ comment.content }}</p>#}
+                    {#                                    <div>#}
+                    {#                                        <button class="btn btn-outline-danger mt-2" type="button"#}
+                    {#                                                data-toggle="collapse"#}
+                    {#                                                data-target="#collapseExample{{ comment.id }}"#}
+                    {#                                                aria-expanded="false"#}
+                    {#                                                aria-controls="collapseExample">#}
+                    {#                                            پاسخ#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                    <form action="{% url 'blog:add_blog_comment_reply' article.id comment.id %}"#}
+                    {#                                          method="post" class="collapse" id="collapseExample{{ comment.id }}">#}
+                    {#                                        {% csrf_token %}#}
+                    {#                                        <div class="row">#}
+                    {#                                            <div class="col-md-12">#}
+                    {#                                                <div class="form-group">#}
+                    {#                                        <textarea name="content" id="message" cols="30" rows="5" class="form-control"#}
+                    {#                                                  placeholder="دیدگاه شما" required="required"></textarea>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="col-12">#}
+                    {#                                                <button type="submit" name="submit" class="btn-custom">#}
+                    {#                                                    پاسخ به این دیدگاه#}
+                    {#                                                </button>#}
+                    {#                                            </div>#}
+                    {#                                        </div>#}
+                    {#                                    </form>#}
+                    {#                                </div>#}
+                    {#                                <ul class="widget-comments">#}
+                    {#                                    {% for reply in comment.reply_blog_comments.all %}#}
+                    {#                                        <li class="comment-item">#}
+                    {#                                            <div class="shadow-sm mr-5 w-75 mt-3 p-2 bg-white">#}
+                    {#                                                <div class="d-flex align-items-center">#}
+                    {#                                                    <p class="text-danger mb-0 vazir font-13">{{ reply.user.full_name }}</p>#}
+                    {#                                                </div>#}
+                    {#                                                <p class="text-justify my-2 vazir font-13">{{ reply.content }}</p>#}
+                    {#                                            </div>#}
+                    {#                                        </li>#}
+                    {#                                    {% endfor %}#}
+                    {#                                </ul>#}
+                    {#                            </li>#}
+                    {#                        {% endfor %}#}
+                    {#                    </ul>#}
+
+
+                    <!--widget-comments-->
+                    <div class="widget mb-50">
+                        <div class="title">
+                            <h5>{{ comments_count }} دیدگاه</h5>
+                        </div>
+                        {% for comment in comments %}
+                            <div class="bg-light my-3 p-2 pb-4 rounded">
+                                <div class="d-flex align-items-center">
+                                    <p class="text-danger mb-0 vazir font-13">{{ comment.user.full_name }}</p>
+                                    <small class="mx-2 text-muted">&nbsp;{{ comment.created_date }}</small>
+                                </div>
+                                <p class="text-justify my-2 vazir font-13">{{ comment.content }}</p>
+                                {% for reply in comment.reply_blog_comments.all %}
+                                    <div class="shadow-sm mr-5 w-75 mt-3 p-2 bg-white">
+                                        <div class="d-flex align-items-center">
+                                            <p class="text-danger mb-0 vazir font-13">{{ reply.user.full_name }}</p>
+                                            <small class="mx-2 text-muted">&nbsp;{{ reply.created_date }}</small>
+                                        </div>
+                                        <p class="text-justify my-2 vazir font-13">{{ reply.content }}</p>
+                                    </div>
+                                {% endfor %}
+
+                                <button class="btn btn-outline-danger mt-2" type="button"
+                                        data-toggle="collapse"
+                                        data-target="#collapseExample{{ comment.id }}"
+                                        aria-expanded="false"
+                                        aria-controls="collapseExample">
+                                    پاسخ
+                                </button>
+                            </div>
+                            <form action="{% url 'blog:add_blog_comment_reply' article.id comment.id %}"
+                                  method="post" class="collapse" id="collapseExample{{ comment.id }}">
+                                {% csrf_token %}
+                                <div class="form-group col-md-12">
+                                            <textarea class="form-control" name="content" rows="3"
+                                                      placeholder="پاسخ به این نظر"></textarea>
+                                </div>
+                                <div class="form-submit col-md-12">
+                                    <button class="btn btn-danger" type="submit">ثبت پاسخ به این
+                                        نظر
+                                    </button>
+                                </div>
+                            </form>
+                        {% endfor %}
+                        <!--Leave-comments-->
+                        {% if request.user.is_authenticated %}
+                            <div class="title">
+                                <h5>لطفا دیدگاه خود را بنویسید</h5>
+                            </div>
+                            <form class="widget-form" action="{% url 'blog:add_blog_comment' article.id %}"
+                                  method="post" id="main_contact_form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                        <textarea name="content" id="message" cols="30" rows="5" class="form-control"
+                                                  placeholder="دیدگاه شما" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" name="submit" class="btn-custom">
+                                            ثبت دیدگاه
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="title">
+                                <h5>برای ارسال دیدگاه ابتدا به حساب کاربری خود <a
+                                        href="{% url 'accounts:login_page' %}" class="text-info">وارد</a> شوید.</h5>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/static/blog_static/js/custom-jquery-3.5.1-jquery.slim.min.js"></script>
+    <script src="/static/blog_static/js/custom-bootstrap-4.6.1-bootstrap.min.js"></script>
+{% endblock %}

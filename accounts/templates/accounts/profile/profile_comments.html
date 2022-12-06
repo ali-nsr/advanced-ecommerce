@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="page-content" style="margin-top: 205.5px; transform: none;">
+        <div class="container" style="transform: none;">
+            <div class="row mb-5" style="transform: none;">
+                {% include 'accounts/profile/sidebar.html' %}
+                <div class="col-lg-9 col-md-8">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="section-title mb-2">
+                                نظرات من
+                            </div>
+                            <section class="shadow-around p-3">
+                                <div class="row">
+                                    {% for comment in comments %}
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="shadow-around p-3">
+                                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                                    <span class="font-weight-bold">{{ comment.title }}</span>
+                                                    <span class="badge badge-warning">{{ comment.get_status_display }}</span>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <p class="text-sm text-muted mb-3">
+                                                        {{ comment.text|truncatewords:20 }}
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <cite class="text-sm">{{ comment.created_date }}</cite>
+                                                    <form action="{% url 'accounts:comment_delete' comment.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

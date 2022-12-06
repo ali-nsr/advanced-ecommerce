@@ -1,0 +1,139 @@
+{% extends 'blog/blog_base.html' %}
+{% load convert_date_tags %}
+{% block blog_content %}
+    <section class="categorie-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="categorie-title">
+                        <h3>تگ : <span> {{ category.name }}</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="blog-grid">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8 mt-30">
+                    <div class="row">
+                        {% for article in object_list %}
+                            <div class="col-lg-6 col-md-6">
+                                <!--Post-1-->
+                                <div class="post-card">
+                                    <div class="post-card-image">
+                                        <a href="{{ article.get_absolute_url }}">
+                                            <img src="{{ article.image.url }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="post-card-content">
+                                        <a href="#" class="categorie">{{ article.categories.first }}</a>
+                                        <h5>
+                                            <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                                        </h5>
+                                        <p>{{ article.short_description }}</p>
+                                        <div class="post-card-info">
+                                            <ul class="list-inline">
+                                                {#                                            <li>#}
+                                                {#                                                <a href="author.html">#}
+                                                {#                                                    <img src="assets/img/author/1.jpg" alt="">#}
+                                                {#                                                </a>#}
+                                                {#                                            </li>#}
+                                                <li>
+                                                    <a href="#">{{ article.author.full_name }}</a>
+                                                </li>
+                                                <li class="dot"></li>
+                                                <li>{{ article.created_date|convert_to_jalali }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/-->
+                            </div>
+                        {% endfor %}
+
+                        <!--pagination-->
+                        {% if is_paginated %}
+                            <div class="col-lg-12">
+                                <div class="pagination mt--10">
+                                    <ul class="list-inline">
+                                        {% if page_obj.has_previous %}
+                                            <li>
+                                                <a href="?page={{ page_obj.previous_page_number }}">
+                                                    <i class="arrow_carrot-2right"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                                            </li>
+                                        {% endif %}
+                                        <li class="active">
+                                            <a href="">{{ page_obj.number }}</a>
+                                        </li>
+                                        {% if page_obj.has_next %}
+                                            <li>
+                                                <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                                            </li>
+                                            <li>
+                                                <a href="?page={{ page_obj.next_page_number }}">
+                                                    <i class="arrow_carrot-2left"></i>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <!--/-->
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-4 max-width">
+                    <!--widget-latest-posts-->
+                    <div class="widget ">
+                        <div class="section-title">
+                            <h5>نوشته های اخیر</h5>
+                        </div>
+                        <ul class="widget-latest-posts">
+                            {% for article in articles %}
+                                <li class="last-post">
+                                    <div class="image">
+                                        <a href="{{ article.get_absolute_url }}">
+                                            <img src="{{ article.image.url }}" alt="{{ article.image_alt }}">
+                                        </a>
+                                    </div>
+                                    <div class="nb">{{ forloop.counter }}</div>
+                                    <div class="content">
+                                        <p>
+                                            <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                                        </p>
+                                        <small>
+                                            <span class="icon_clock_alt"></span> {{ article.created_date|convert_to_jalali }}
+                                        </small>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!--/-->
+
+                    <!--widget-tags-->
+                    {#                    <div class="widget">#}
+                    {#                        <div class="section-title">#}
+                    {#                            <h5>برچسب ها</h5>#}
+                    {#                        </div>#}
+                    {#                        <div class="widget-tags">#}
+                    {#                            <ul class="list-inline">#}
+                    {#                                <li>#}
+                    {#                                    <a href="blog-grid.html">سفر</a>#}
+                    {#                                </li>#}
+                    {##}
+                    {#                            </ul>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    <!--/-->
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

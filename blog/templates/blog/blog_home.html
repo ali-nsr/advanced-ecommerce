@@ -1,0 +1,83 @@
+{% extends 'blog/blog_base.html' %}
+{% load thumbnail %}
+{% load convert_date_tags %}
+{% block blog_window_title %}مجله سرگرمی همتا گیم{% endblock %}
+{% block blog_meta_description %}{{ blog_home_seo.meta_description }}{% endblock %}
+{% block blog_meta_keywords %}{{ blog_home_seo.meta_keywords }}{% endblock %}
+{% block blog_meta_robots %}index, follow{% endblock %}
+{% block blog_link_canonical %}https://hamtagame.ir/mag{% endblock %}
+{% block blog_content %}
+
+    <section class="section pt-85">
+        <div class="container-fluid">
+            <div class="row">
+                {% for article in object_list %}
+                    <div class="col-lg-4 col-md-6">
+                        <!--Post-1-->
+                        <div class="post-card">
+                            <div class="post-card-image">
+                                <a href="{{ article.get_absolute_url }}">
+                                    {% thumbnail article.image "400x400" crop="center" as img %}
+                                        <img src="{{ img.url }}" alt="{{ article.image_alt }}">
+                                    {% endthumbnail %}
+                                </a>
+                            </div>
+                            <div class="post-card-content">
+                                <a href="" class="categorie">{{ article.categories.first }}</a>
+                                <h5>
+                                    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                                </h5>
+                                <p>{{ article.short_description }}</p>
+                                <div class="post-card-info">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <small>{{ article.author.full_name }}</small>
+                                        </li>
+                                        <li class="dot"></li>
+                                        <li>{{ article.created_date | convert_to_jalali }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/-->
+                    </div>
+                {% endfor %}
+                <!--pagination-->
+            {% if is_paginated %}
+                <div class="col-lg-12">
+                    <div class="pagination mt--10">
+                        <ul class="list-inline">
+                            {% if page_obj.has_previous %}
+                                <li>
+                                    <a href="mag?page={{ page_obj.previous_page_number }}">
+                                        <i class="arrow_carrot-2right"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="mag?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                                </li>
+                            {% endif %}
+                            <li class="active">
+                                <a href="">{{ page_obj.number }}</a>
+                            </li>
+                            {% if page_obj.has_next %}
+                                <li>
+                                    <a href="mag?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                                </li>
+                                <li>
+                                    <a href="mag?page={{ page_obj.next_page_number }}">
+                                        <i class="arrow_carrot-2left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!--/-->
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+{% endblock blog_content %}

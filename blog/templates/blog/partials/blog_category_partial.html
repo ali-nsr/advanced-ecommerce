@@ -1,0 +1,23 @@
+{% for category in categories %}
+    {% if category.parent == None %}
+        <li class="nav-item dropdown">
+            <a class="nav-link {% if category.children.all %}dropdown-toggle{% endif %}"
+               href="{{ category.get_absolute_url }}"
+               {% if category.children.all %}data-toggle="dropdown"{% endif %}>{{ category.name }}</a>
+            {% if category.children.all %}
+                <ul class="dropdown-menu fade-up">
+                    {% for cat in category.children.all %}
+                        <li>
+                            <a class="dropdown-item" href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endif %}
+{% endfor %}
+<li class="nav-item dropdown">
+    <a class="nav-link" href="{% url 'store:home_page' %}">
+        <i class="fa fa-store m-1"></i>فروشگاه
+    </a>
+</li>

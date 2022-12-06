@@ -1,0 +1,4 @@
+<option value="">انتخاب شهر</option>
+{% for city in cities %}
+    <option value="{{ city.pk }}">{{ city.fa_name }}</option>
+{% endfor %}

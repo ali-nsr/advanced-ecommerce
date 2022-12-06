@@ -1,0 +1,89 @@
+{% load static %}
+<div class="col-lg-3 col-md-4 mb-md-0 mb-3 sticky-sidebar"
+     style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+
+    <div class="theiaStickySidebar"
+         style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; left: 658.2px; top: 0px;">
+        <div class="sidebar-widget">
+            <div class="banner mb-3">
+                <div class="profile-avatar text-center">
+                    <img src="/static/images/avatar/avatar.png" alt="avatar">
+                </div>
+            </div>
+            <div class="profile-sidebar shadow-around">
+                <div class="user-menu">
+                    {% with url_name=request.resolver_match.url_name %}
+                        <ul>
+                            <li>
+                                <a href="{% url 'accounts:dashboard' %}"
+                                   {% if url_name == 'dashboard' %}class="active" {% endif %}>
+                                    <i class="far fa-home"></i>
+                                    داشبورد
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:order_list' %}"
+                                   {% if url_name == 'order_list' %}class="active"{% endif %}>
+                                    <i class="far fa-clipboard-list-check"></i>
+                                    سفارش های من
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:favourite' %}"
+                                   {% if url_name == 'favourite' %}class="active"{% endif %}>
+                                    <i class="far fa-heart"></i>
+                                    لیست علاقمندی
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:comments' %}"
+                                   {% if url_name == 'comments' %}class="active"{% endif %}>
+                                    <i class="far fa-comment-alt-lines"></i>
+                                    نظرات
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'ticket:ticket_list' %}"
+                                   {% if url_name == 'ticket' %}class="active"{% endif %}>
+                                    <i class="far fa-envelope"></i>
+                                    تیکت ها
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:profile_info' %}"
+                                   {% if url_name == 'profile_info' %}class="active"{% endif %}>
+                                    <i class="far fa-user-cog"></i>
+                                    اطلاعات حساب
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:change_password' %}"
+                                   {% if url_name == 'change_password' %}class="active"{% endif %}>
+                                    <i class="far fa-user-lock"></i>
+                                    تغییر رمز عبور
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'accounts:logout_page' %}">
+                                    <i class="far fa-sign-in-alt"></i>
+                                    خروج
+                                </a>
+                            </li>
+                        </ul>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        <div class="resize-sensor"
+             style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+            <div class="resize-sensor-expand"
+                 style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 332px; height: 1721px;"></div>
+            </div>
+            <div class="resize-sensor-shrink"
+                 style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+            </div>
+        </div>
+    </div>
+</div>
