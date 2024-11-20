@@ -11,6 +11,8 @@ sitemaps = {
     'article': ArticleViewSitemap,
 }
 
+
+
 urlpatterns = [
     path('', include('store.urls', namespace='store')),
     path('cart/', include('cart.urls', namespace='cart')),
