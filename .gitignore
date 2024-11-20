@@ -17,6 +17,7 @@ env
 .env
 static
 static_root
+.idea
 
 
 
